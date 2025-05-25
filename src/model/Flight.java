@@ -119,6 +119,5 @@ public class Flight {
     public ArrayList<Passenger> getPassengers() {
         return passengers;
     }
-
     
 }

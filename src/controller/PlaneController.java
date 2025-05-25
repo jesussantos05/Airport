@@ -21,16 +21,13 @@ public class PlaneController {
     }
 
     public Response registerPlane(String id, String brand, String model, int capacity, String airline) {
-        if (id == null || id.isBlank()) return new Response(400, "ID vacío");
-        if (brand == null || brand.isBlank()) return new Response(400, "Marca vacía");
-        if (model == null || model.isBlank()) return new Response(400, "Modelo vacío");
-        if (airline == null || airline.isBlank()) return new Response(400, "Aerolínea vacía");
-        if (capacity <= 0 || capacity > 1000) return new Response(400, "Capacidad inválida");
+        
+        String error = validator.PlaneValidator.validate(id, brand, model, capacity);
+        if (error != null) return new Response(400, error);
+
 
         for (Plane p : planes) {
-            if (p.getId().equals(id)) {
-                return new Response(400, "Ya existe un avión con ese ID");
-            }
+            if (p.getId().equals(id)) return new Response(400, "Ya existe un avión con ese ID");   
         }
 
         Plane plane = new Plane(id, brand, model, capacity, airline);

@@ -25,23 +25,20 @@ public class FlightController {
 
     public Response registerFlight(String id, Plane plane, Location origin, Location destination,
             LocalDateTime date, int hours, int minutes) {
-        if (id == null || id.isBlank()) {
-            return new Response(400, "ID vacío");
-        }
-        if (plane == null) {
-            return new Response(400, "Avión no seleccionado");
-        }
-        if (origin == null || destination == null) {
-            return new Response(400, "Ubicación no válida");
-        }
-        if (origin.getAirportId().equals(destination.getAirportId())) {
-            return new Response(400, "Origen y destino no pueden ser iguales");
-        }
-        if (date == null) {
-            return new Response(400, "Fecha no válida");
-        }
-        if (hours < 0 || minutes < 0) {
-            return new Response(400, "Duración inválida");
+
+        String error = validator.FlightValidator.validate(
+                id,
+                plane == null ? null : plane.getId(),
+                origin == null ? null : origin.getAirportId(),
+                destination == null ? null : destination.getAirportId(),
+                null, // sin escala
+                date == null ? null : date.toLocalDate(),
+                java.time.LocalTime.of(hours, minutes),
+                java.time.LocalTime.of(0, 0),
+                false // sin escala
+        );
+        if (error != null) {
+            return new Response(400, error);
         }
 
         for (Flight f : flights) {
@@ -64,7 +61,7 @@ public class FlightController {
         }
         for (Flight f : flights) {
             if (f.getId().equalsIgnoreCase(flightId)) {
-                
+
                 // Validar si ya está
                 for (model.Passenger p : f.getPassengers()) {
                     if (p.getId() == passenger.getId()) {
@@ -78,13 +75,42 @@ public class FlightController {
                 }
 
                 f.addPassenger(passenger);
-                passenger.addFlight(f);   
-                
+                passenger.addFlight(f);
+
                 return new Response(200, "Pasajero añadido al vuelo correctamente");
             }
         }
-        
+
         return new Response(404, "Vuelo no encontrado");
+    }
+
+    public Response registerFlight(String id, Plane plane, Location origin, Location destination, Location scale,
+            LocalDateTime date, int hoursArrival, int minutesArrival, int hoursScale, int minutesScale) {
+
+        String error = validator.FlightValidator.validate(
+                id,
+                plane == null ? null : plane.getId(),
+                origin == null ? null : origin.getAirportId(),
+                destination == null ? null : destination.getAirportId(),
+                scale == null ? null : scale.getAirportId(),
+                date == null ? null : date.toLocalDate(),
+                java.time.LocalTime.of(hoursArrival, minutesArrival),
+                java.time.LocalTime.of(hoursScale, minutesScale),
+                true // con escala
+        );
+        if (error != null) {
+            return new Response(400, error);
+        }
+
+        for (Flight f : flights) {
+            if (f.getId().equalsIgnoreCase(id)) {
+                return new Response(400, "Ya existe un vuelo con ese ID");
+            }
+        }
+
+        Flight flight = new Flight(id, plane, origin, scale, destination, date, hoursArrival, minutesArrival, hoursScale, minutesScale);
+        flights.add(flight);
+        return new Response(200, "Vuelo con escala registrado correctamente");
     }
 
 }

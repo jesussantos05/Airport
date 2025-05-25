@@ -21,13 +21,10 @@ public class LocationController {
     }
 
     public Response registerLocation(String id, String name, String city, String country, double lat, double lon) {
-        if (id == null || id.isBlank()) return new Response(400, "ID vacío");
-        if (name == null || name.isBlank()) return new Response(400, "Nombre vacío");
-        if (city == null || city.isBlank()) return new Response(400, "Ciudad vacía");
-        if (country == null || country.isBlank()) return new Response(400, "País vacío");
-        if (lat < -90 || lat > 90) return new Response(400, "Latitud inválida");
-        if (lon < -180 || lon > 180) return new Response(400, "Longitud inválida");
-
+        
+        String error = validator.LocationValidator.validate(id, city, country, lat, lon);
+        if (error != null) return new Response(400, error);
+        
         for (Location loc : locations) {
             if (loc.getAirportId().equalsIgnoreCase(id)) {
                 return new Response(400, "Ya existe una ubicación con ese ID");

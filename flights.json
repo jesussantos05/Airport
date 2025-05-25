@@ -6,7 +6,7 @@
         "scaleLocation": null,
         "minutesDurationArrival": 15,
         "id": "FLY001",
-        "departureDate": "2025-06-01T15:30",
+        "departureDate": "2025-06-01T14:30",
         "hoursDurationScale": 0,
         "arrivalLocation": "LHR",
         "hoursDurationArrival": 7
@@ -150,21 +150,9 @@
         "scaleLocation": null,
         "minutesDurationArrival": 0,
         "id": "BUH009",
-        "departureDate": "2025-02-01T10:00",
+        "departureDate": "2025-02-01T01:00",
         "hoursDurationScale": 0,
         "arrivalLocation": "MEX",
-        "hoursDurationArrival": 3
-    },
-    {
-        "plane": "EF11223",
-        "minutesDurationScale": 0,
-        "departureLocation": "LHR",
-        "scaleLocation": null,
-        "minutesDurationArrival": 0,
-        "id": "JUL880",
-        "departureDate": "2025-10-01T12:00",
-        "hoursDurationScale": 0,
-        "arrivalLocation": "CMN",
         "hoursDurationArrival": 1
     }
 ]

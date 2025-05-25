@@ -13,6 +13,7 @@ import java.util.ArrayList;
  * @author Jesús
  */
 public class PassengerController {
+
     private ArrayList<Passenger> passengers;
 
     public PassengerController(ArrayList<Passenger> passengers) {
@@ -20,24 +21,47 @@ public class PassengerController {
     }
 
     public Response registerPassenger(long id, String first, String last, LocalDate birthDate,
-                                      int code, long phone, String country) {
-        
-        if (id < 0 || String.valueOf(id).length() > 15) return new Response(400, "ID inválido");
-        if (first.isEmpty() || last.isEmpty() || country.isEmpty()) return new Response(400, "Campos vacíos");
-        if (birthDate == null) return new Response(400, "Fecha inválida");
-        if (code < 0 || String.valueOf(code).length() > 3) return new Response(400, "Código país inválido");
-        if (phone < 0 || String.valueOf(phone).length() > 11) return new Response(400, "Teléfono inválido");
+            int code, long phone, String country) {
+
+        String error = validator.PassengerValidator.validate(id, first, last, birthDate, code, phone, country);
+        if (error != null) return new Response(400, error);
+
 
         for (Passenger p : passengers) {
-            
-            if (p.getId() == id) return new Response(400, "Ya existe un pasajero con ese ID");
-            
+
+            if (p.getId() == id) {
+                return new Response(400, "Ya existe un pasajero con ese ID");
+            }
+
         }
 
         Passenger p = new Passenger(id, first, last, birthDate, code, phone, country);
         passengers.add(p);
         return new Response(200, "Pasajero registrado correctamente");
-        
+
     }
-    
+
+    public Response updatePassenger(long id, String first, String last, LocalDate birthDate,
+            int code, long phone, String country) {
+
+        String error = validator.PassengerValidator.validate(id, first, last, birthDate, code, phone, country);
+        if (error != null) return new Response(400, error);
+
+
+        for (Passenger p : passengers) {
+            if (p.getId() == id) {
+                // Actualiza los campos
+                p.setFirstname(first);
+                p.setLastname(last);
+                p.setBirthDate(birthDate);
+                p.setCountryPhoneCode(code);
+                p.setPhone(phone);
+                p.setCountry(country);
+                return new Response(200, "Pasajero actualizado correctamente");
+            }
+        }
+
+        return new Response(404, "Pasajero no encontrado");
+    }
+
 }
