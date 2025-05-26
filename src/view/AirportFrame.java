@@ -112,7 +112,7 @@ public class AirportFrame extends javax.swing.JFrame {
 
         locationFlightRegis.removeAllItems();
         arrivalLocationFlightRegis.removeAllItems();
-        scaleLocationFlightRegis.removeAllItems(); // ← Añadido
+        scaleLocationFlightRegis.removeAllItems();
 
         locationFlightRegis.addItem("Location");
         arrivalLocationFlightRegis.addItem("Location");
@@ -121,7 +121,7 @@ public class AirportFrame extends javax.swing.JFrame {
         for (Location l : locations) {
             locationFlightRegis.addItem(l.getAirportId());
             arrivalLocationFlightRegis.addItem(l.getAirportId());
-            scaleLocationFlightRegis.addItem(l.getAirportId()); // ← Añadido
+            scaleLocationFlightRegis.addItem(l.getAirportId());
         }
     }
 
@@ -1816,7 +1816,6 @@ public class AirportFrame extends javax.swing.JFrame {
             JsonSaver.saveFlights(flights, "json/flights.json"); // guardar vuelo en archivo
 
         } catch (Exception e) {
-            e.printStackTrace(); // Para depuración en consola
             javax.swing.JOptionPane.showMessageDialog(this, "Error: " + e.getMessage());
         }
 
@@ -1859,7 +1858,7 @@ public class AirportFrame extends javax.swing.JFrame {
             selectedPassenger.setCountry(countryPassengerUpdateInfo.getText());
 
             javax.swing.JOptionPane.showMessageDialog(this, "Información del pasajero actualizada correctamente.");
-            updatePassengerCombo();     // y para actualizar el combo, en caso de que id/name cambien
+            updatePassengerCombo();     // actualizar el combo en caso de que id/name cambien
 
             JsonSaver.savePassengers(passengers, "json/passengers.json");
 
@@ -2021,7 +2020,7 @@ public class AirportFrame extends javax.swing.JFrame {
 
     private void userSelectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_userSelectActionPerformed
         String raw = (String) userSelect.getSelectedItem();
-        // si está en la posición cero o es el texto por defecto, no hacemos nada
+        // si está en la posicion cero o es el texto por defecto, no hacemos nada
         if (raw == null || raw.equals("Select User") || raw.isBlank()) {
             return;
         }
@@ -2038,18 +2037,18 @@ public class AirportFrame extends javax.swing.JFrame {
             }
 
             if (selectedPassenger != null) {
-                // Rellena aquí **todos** los campos de tu formulario de Update Info
+                // Rellena aquí todos los campos de tu formulario de Update Info
                 idPassengerUpdateInfo.setText(String.valueOf(selectedPassenger.getId()));
                 firstNamePassengerUpdateInfo.setText(selectedPassenger.getFirstname());
                 lastNamePassengerUpdateInfo.setText(selectedPassenger.getLastname());
 
-                // Birthdate desglosado en tu combo Month5/Day5 y jTextField24
+                // Birthdate
                 LocalDate bd = selectedPassenger.getBirthDate();
                 yearPassengerUpdateInfo.setText(String.valueOf(bd.getYear()));
                 monthPassengerUpdateInfo.setSelectedItem(String.valueOf(bd.getMonthValue()));
                 dayPassengerUpdateInfo.setSelectedItem(String.valueOf(bd.getDayOfMonth()));
 
-                // Teléfono y código de país
+                // Telefono y codigo de pais
                 phoneCodePassengerUpdateInfo.setText(String.valueOf(selectedPassenger.getCountryPhoneCode()));
                 phonePassengerUpdateInfo.setText(String.valueOf(selectedPassenger.getPhone()));
 
@@ -2057,7 +2056,7 @@ public class AirportFrame extends javax.swing.JFrame {
             }
 
         } catch (NumberFormatException nfe) {
-            // no es un número válido
+            // no es un número valido
         } catch (Exception e) {
             javax.swing.JOptionPane.showMessageDialog(this, "Error al cargar datos del pasajero:\n" + e.getMessage());
         }
