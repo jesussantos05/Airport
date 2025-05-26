@@ -206,7 +206,7 @@ public class AirportFrame extends javax.swing.JFrame {
 
         panelRound1 = new view.PanelRound();
         panelRound2 = new view.PanelRound();
-        jButton13 = new javax.swing.JButton();
+        ExitButton = new javax.swing.JButton();
         jTabbedPane1 = new javax.swing.JTabbedPane();
         jPanel2 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
@@ -361,14 +361,14 @@ public class AirportFrame extends javax.swing.JFrame {
             }
         });
 
-        jButton13.setFont(new java.awt.Font("Yu Gothic UI", 0, 18)); // NOI18N
-        jButton13.setText("X");
-        jButton13.setBorderPainted(false);
-        jButton13.setContentAreaFilled(false);
-        jButton13.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        jButton13.addActionListener(new java.awt.event.ActionListener() {
+        ExitButton.setFont(new java.awt.Font("Yu Gothic UI", 0, 18)); // NOI18N
+        ExitButton.setText("X");
+        ExitButton.setBorderPainted(false);
+        ExitButton.setContentAreaFilled(false);
+        ExitButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        ExitButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton13ActionPerformed(evt);
+                ExitButtonActionPerformed(evt);
             }
         });
 
@@ -378,13 +378,13 @@ public class AirportFrame extends javax.swing.JFrame {
             panelRound2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelRound2Layout.createSequentialGroup()
                 .addContainerGap(1083, Short.MAX_VALUE)
-                .addComponent(jButton13, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(ExitButton, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(17, 17, 17))
         );
         panelRound2Layout.setVerticalGroup(
             panelRound2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelRound2Layout.createSequentialGroup()
-                .addComponent(jButton13)
+                .addComponent(ExitButton)
                 .addGap(0, 12, Short.MAX_VALUE))
         );
 
@@ -2014,9 +2014,9 @@ public class AirportFrame extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_RefreshShowAllLocationsButtonActionPerformed
 
-    private void jButton13ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton13ActionPerformed
+    private void ExitButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ExitButtonActionPerformed
         System.exit(0);
-    }//GEN-LAST:event_jButton13ActionPerformed
+    }//GEN-LAST:event_ExitButtonActionPerformed
 
     private void userSelectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_userSelectActionPerformed
         String raw = (String) userSelect.getSelectedItem();
@@ -2136,6 +2136,7 @@ public class AirportFrame extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton AddToFlightButton;
     private javax.swing.JButton DelayFlightButton;
+    private javax.swing.JButton ExitButton;
     private javax.swing.JButton RefreshShowAllFlightsButton;
     private javax.swing.JButton RefreshShowAllLocationsButton;
     private javax.swing.JButton RefreshShowAllPassengersButton;
@@ -2169,7 +2170,6 @@ public class AirportFrame extends javax.swing.JFrame {
     private javax.swing.JTextField idPassengerRegiss;
     private javax.swing.JTextField idPassengerUpdateInfo;
     private javax.swing.JTextField idPlaneRegis;
-    private javax.swing.JButton jButton13;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;

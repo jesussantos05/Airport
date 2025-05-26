@@ -4,7 +4,11 @@
  */
 package airport;
 
+import com.formdev.flatlaf.FlatDarkLaf;
 import java.util.ArrayList;
+import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 import model.Flight;
 import model.Location;
 import model.Passenger;
@@ -19,11 +23,16 @@ public class Main {
 
     public static void main(String[] args) {
 
-        try {
-            javax.swing.UIManager.setLookAndFeel(javax.swing.UIManager.getSystemLookAndFeelClassName());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        SwingUtilities.invokeLater(() -> {
+            try {
+                UIManager.setLookAndFeel(new FlatDarkLaf());
+            } catch (UnsupportedLookAndFeelException ex) {
+                System.err.println("No se pudo cargar FlatDarkLaf: " + ex.getMessage());
+            }
+
+            AirportFrame frame = new AirportFrame();
+            frame.setVisible(true);
+        });
 
         ArrayList<Passenger> passengers = JsonLoader.loadPassengers("json/passengers.json");
         System.out.println("Pasajeros cargados: " + passengers.size());
