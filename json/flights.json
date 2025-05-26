@@ -166,5 +166,17 @@
         "hoursDurationScale": 0,
         "arrivalLocation": "CMN",
         "hoursDurationArrival": 1
+    },
+    {
+        "plane": "CD67890",
+        "minutesDurationScale": 0,
+        "departureLocation": "JFK",
+        "scaleLocation": null,
+        "minutesDurationArrival": 0,
+        "id": "KIO880",
+        "departureDate": "2025-02-01T00:00",
+        "hoursDurationScale": 0,
+        "arrivalLocation": "HND",
+        "hoursDurationArrival": 20
     }
 ]

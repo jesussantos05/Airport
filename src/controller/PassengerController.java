@@ -7,6 +7,7 @@ package controller;
 import model.Passenger;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import repository.PassengerRepository;
 
 /**
  *
@@ -14,10 +15,11 @@ import java.util.ArrayList;
  */
 public class PassengerController {
 
-    private ArrayList<Passenger> passengers;
+    //private ArrayList<Passenger> passengers;
+    private final PassengerRepository repository;
 
-    public PassengerController(ArrayList<Passenger> passengers) {
-        this.passengers = passengers;
+    public PassengerController(PassengerRepository repository) {
+        this.repository = repository;
     }
 
     public Response registerPassenger(long id, String first, String last, LocalDate birthDate,
@@ -27,16 +29,11 @@ public class PassengerController {
         if (error != null) return new Response(400, error);
 
 
-        for (Passenger p : passengers) {
-
-            if (p.getId() == id) {
-                return new Response(400, "Ya existe un pasajero con ese ID");
-            }
-
-        }
+        if (repository.exists(id)) return new Response(400, "Ya existe un pasajero con ese ID");
 
         Passenger p = new Passenger(id, first, last, birthDate, code, phone, country);
-        passengers.add(p);
+        repository.save(p);
+
         return new Response(200, "Pasajero registrado correctamente");
 
     }
@@ -48,20 +45,22 @@ public class PassengerController {
         if (error != null) return new Response(400, error);
 
 
-        for (Passenger p : passengers) {
-            if (p.getId() == id) {
-                // Actualiza los campos
-                p.setFirstname(first);
-                p.setLastname(last);
-                p.setBirthDate(birthDate);
-                p.setCountryPhoneCode(code);
-                p.setPhone(phone);
-                p.setCountry(country);
-                return new Response(200, "Pasajero actualizado correctamente");
-            }
-        }
+        Passenger p = repository.findById(id);
+        if (p == null) return new Response(404, "Pasajero no encontrado");
 
-        return new Response(404, "Pasajero no encontrado");
+        // Actualiza los campos
+        p.setFirstname(first);
+        p.setLastname(last);
+        p.setBirthDate(birthDate);
+        p.setCountryPhoneCode(code);
+        p.setPhone(phone);
+        p.setCountry(country);
+
+        // Guardamos la actualización
+        repository.update(p);
+
+        return new Response(200, "Pasajero actualizado correctamente");
+
     }
 
 }

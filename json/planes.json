@@ -96,5 +96,12 @@
         "id": "BX50020",
         "airline": "Mitsubishi",
         "brand": "Mitsubishi Motors"
+    },
+    {
+        "maxCapacity": 18,
+        "model": "SpeedX18",
+        "id": "FX60021",
+        "airline": "Mitsubishi",
+        "brand": "Mitsubishi Motors"
     }
 ]

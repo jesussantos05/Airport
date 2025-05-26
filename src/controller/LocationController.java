@@ -6,6 +6,8 @@ package controller;
 
 import model.Location;
 import java.util.ArrayList;
+import repository.LocationRepository;
+import validator.LocationValidator;
 
 /**
  *
@@ -13,27 +15,22 @@ import java.util.ArrayList;
  */
 public class LocationController {
     
-    
-    private ArrayList<Location> locations;
+    private final LocationRepository repository;
 
-    public LocationController(ArrayList<Location> locations) {
-        this.locations = locations;
+    public LocationController(LocationRepository repository) {
+        this.repository = repository;
     }
 
-    public Response registerLocation(String id, String name, String city, String country, double lat, double lon) {
-        
-        String error = validator.LocationValidator.validate(id, city, country, lat, lon);
+    public Response registerLocation(String id, String name, String city, String country,
+                                     double lat, double lon) {
+        String error = LocationValidator.validate(id, city, country, lat, lon);
         if (error != null) return new Response(400, error);
-        
-        for (Location loc : locations) {
-            if (loc.getAirportId().equalsIgnoreCase(id)) {
-                return new Response(400, "Ya existe una ubicación con ese ID");
-            }
-        }
+
+        if (repository.exists(id)) return new Response(400, "Ya existe una ubicación con ese ID");
 
         Location location = new Location(id, name, city, country, lat, lon);
-        locations.add(location);
+        repository.save(location);
+
         return new Response(200, "Ubicación registrada correctamente");
     }
-    
 }

@@ -22,6 +22,10 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import javax.swing.UIManager;
 import javax.swing.table.DefaultTableModel;
+import repository.FlightRepository;
+import repository.LocationRepository;
+import repository.PassengerRepository;
+import repository.PlaneRepository;
 import utils.ComboInitializer;
 
 /**
@@ -38,6 +42,13 @@ public class AirportFrame extends javax.swing.JFrame {
     private ArrayList<Plane> planes;
     private ArrayList<Location> locations;
     private ArrayList<Flight> flights;
+    private PassengerRepository passengerRepository;
+    private PassengerController passengerController;
+    private PlaneRepository planeRepository;
+    private LocationRepository locationRepository;
+    private FlightRepository flightRepository;
+    private PlaneController planeController;
+    private LocationController locationController;
     
     public AirportFrame() {
         initComponents();
@@ -194,7 +205,23 @@ public class AirportFrame extends javax.swing.JFrame {
             return false;
         }
     }
-
+    
+    public void setPassengerRepository(PassengerRepository repository) {
+        this.passengerRepository = repository;
+        this.passengerController = new PassengerController(repository);
+    }
+    
+    public void setPlaneRepository(PlaneRepository repository) {
+        this.planeRepository = repository;
+        this.planeController = new PlaneController(repository);
+    }
+    
+    public void setLocationRepository(LocationRepository repository) {
+        this.locationRepository = repository;
+        this.locationController = new LocationController(repository);
+    }
+    
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -1605,40 +1632,42 @@ public class AirportFrame extends javax.swing.JFrame {
 
     private void registerPassengerButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_registerPassengerButtonActionPerformed
         try {
-            long id = Long.parseLong(idPassengerRegiss.getText());
-            String firstname = firstNameRegis.getText();
-            String lastname = lastNameRegis.getText();
-            int year = Integer.parseInt(yearRegis.getText());
-            int month = Integer.parseInt(monthRegis.getSelectedItem().toString());
-            int day = Integer.parseInt(dayRegis.getSelectedItem().toString());
-            LocalDate birthDate = LocalDate.of(year, month, day);
-            int code = Integer.parseInt(phoneCodeRegis.getText());
-            long phone = Long.parseLong(phoneRegis.getText());
-            String country = countryRegis.getText();
+        long id = Long.parseLong(idPassengerRegiss.getText());
+        String firstname = firstNameRegis.getText();
+        String lastname = lastNameRegis.getText();
+        int year = Integer.parseInt(yearRegis.getText());
+        int month = Integer.parseInt(monthRegis.getSelectedItem().toString());
+        int day = Integer.parseInt(dayRegis.getSelectedItem().toString());
+        LocalDate birthDate = LocalDate.of(year, month, day);
+        int code = Integer.parseInt(phoneCodeRegis.getText());
+        long phone = Long.parseLong(phoneRegis.getText());
+        String country = countryRegis.getText();
 
-            PassengerController controller = new PassengerController(passengers);
-            Response res = controller.registerPassenger(id, firstname, lastname, birthDate, code, phone, country);
+        // Ya NO se crea un nuevo controller aquí
+        Response res = passengerController.registerPassenger(id, firstname, lastname, birthDate, code, phone, country);
+        javax.swing.JOptionPane.showMessageDialog(this, res.getMessage());
 
-            javax.swing.JOptionPane.showMessageDialog(this, res.getMessage());
-
-            if (res.getStatusCode() == 200) {
-                // Limpia campos si fue exitoso
-                phoneCodeRegis.setText("");
-                idPassengerRegiss.setText("");
-                yearRegis.setText("");
-                countryRegis.setText("");
-                phoneRegis.setText("");
-                lastNameRegis.setText("");
-                firstNameRegis.setText("");
-                monthRegis.setSelectedIndex(0);
-                dayRegis.setSelectedIndex(0);
-            }
-            updatePassengerCombo();
-            JsonSaver.savePassengers(passengers, "json/passengers.json");
-
-        } catch (Exception e) {
-            javax.swing.JOptionPane.showMessageDialog(this, "Error: datos inválidos o vacíos");
+        if (res.getStatusCode() == 200) {
+            // Limpia campos si fue exitoso
+            phoneCodeRegis.setText("");
+            idPassengerRegiss.setText("");
+            yearRegis.setText("");
+            countryRegis.setText("");
+            phoneRegis.setText("");
+            lastNameRegis.setText("");
+            firstNameRegis.setText("");
+            monthRegis.setSelectedIndex(0);
+            dayRegis.setSelectedIndex(0);
         }
+
+        updatePassengerCombo();
+
+        // Guardar usando repository
+        JsonSaver.savePassengers((ArrayList<Passenger>) passengerRepository.getAll(), "json/passengers.json");
+
+    } catch (Exception e) {
+        javax.swing.JOptionPane.showMessageDialog(this, "Error: datos inválidos o vacíos");
+    }
     }//GEN-LAST:event_registerPassengerButtonActionPerformed
 
     private void createPlaneRegistrationButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createPlaneRegistrationButtonActionPerformed
@@ -1648,9 +1677,10 @@ public class AirportFrame extends javax.swing.JFrame {
             String model = modelRegis.getText();
             int capacity = Integer.parseInt(maxCapacityRegis.getText());
             String airline = airlineRegis.getText();
-
-            PlaneController controller = new PlaneController(planes);
-            Response res = controller.registerPlane(id, brand, model, capacity, airline);
+            
+            
+            //PlaneController controller = new PlaneController((ArrayList<Plane>) planeRepository);
+            Response res = planeController.registerPlane(id, brand, model, capacity, airline);
 
             javax.swing.JOptionPane.showMessageDialog(this, res.getMessage());
 
@@ -1666,8 +1696,8 @@ public class AirportFrame extends javax.swing.JFrame {
                 updateFlightComboBoxes();
             }
 
-            JsonSaver.savePlanes(planes, "json/planes.json");
-
+            JsonSaver.savePlanes((ArrayList<Plane>) planeRepository.getAll(), "json/planes.json");
+            
         } catch (Exception e) {
             javax.swing.JOptionPane.showMessageDialog(this, "Error: datos inválidos o vacíos");
         }
@@ -1682,8 +1712,7 @@ public class AirportFrame extends javax.swing.JFrame {
             double latitude = Double.parseDouble(latitudeAirportRegis.getText());
             double longitude = Double.parseDouble(longitudeAirportRegis.getText());
 
-            LocationController controller = new LocationController(locations);
-            Response res = controller.registerLocation(id, name, city, country, latitude, longitude);
+            Response res = locationController.registerLocation(id, name, city, country, latitude, longitude);
 
             javax.swing.JOptionPane.showMessageDialog(this, res.getMessage());
 

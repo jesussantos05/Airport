@@ -102,5 +102,13 @@
         "airportLatitude": 45.6721,
         "airportId": "TUC",
         "airportLongitude": -3.789
+    },
+    {
+        "airportName": "EL Dorado",
+        "airportCountry": "Colombia",
+        "airportCity": "Bogotá",
+        "airportLatitude": 56.8921,
+        "airportId": "DOR",
+        "airportLongitude": -9.1227
     }
 ]
